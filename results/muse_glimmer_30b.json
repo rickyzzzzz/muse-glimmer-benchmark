@@ -1,0 +1,139 @@
+{
+  "model": "muse-glimmer:30b-mlx",
+  "passed": 12,
+  "total": 12,
+  "total_time": 371.35714983940125,
+  "results": [
+    {
+      "test": "tool_call_weather",
+      "passed": true,
+      "detail": "called get_weather",
+      "avg_elapsed": 9.104730129241943,
+      "tool_calls": [
+        "get_weather"
+      ],
+      "error": null,
+      "sample_text": "The current weather in Tokyo is **24\u00b0C, partly cloudy**."
+    },
+    {
+      "test": "tool_call_args",
+      "passed": true,
+      "detail": "computed 15*4=60",
+      "avg_elapsed": 9.223634958267212,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The calculation is:\n\n15 \u00d7 4 = **60**\n"
+    },
+    {
+      "test": "multi_step_weather",
+      "passed": true,
+      "detail": "queried both cities",
+      "avg_elapsed": 19.193485021591187,
+      "tool_calls": [
+        "get_weather",
+        "get_weather"
+      ],
+      "error": null,
+      "sample_text": "Paris is currently 18 \u00b0C with light rain.\nTokyo is currently 24 \u00b0C and partly cloudy.\n\nTokyo is warmer \u2014 about 6 \u00b0C warmer than Paris.\n"
+    },
+    {
+      "test": "multi_step_search_read",
+      "passed": true,
+      "detail": "searched then read",
+      "avg_elapsed": 31.823593854904175,
+      "tool_calls": [
+        "search_files",
+        "read_file"
+      ],
+      "error": null,
+      "sample_text": "The search in `/home/user/project` found `main.py`, `utils.py` and `test_main.py`.\n\nContents of `/home/user/project/main.py`:\n\n```python\ndef main():\n    print('hello')\n    return 42\n```\n\n`main()` prints `hello` and returns `42`.\n"
+    },
+    {
+      "test": "failure_recovery",
+      "passed": true,
+      "detail": "recovered from error",
+      "avg_elapsed": 86.74602484703064,
+      "tool_calls": [
+        "read_file",
+        "search_files",
+        "read_file",
+        "read_file"
+      ],
+      "error": null,
+      "sample_text": "The file you asked for could not be read:\n\n* `/home/user/project/nonexistent.txt` \u2192 Error: file not found\n\nAs a fallback I searched `/home/user/project` for `config*`:\n\nFound:\n* `config.yaml`\n* `config.json`\n\nRead results:\n\n* `/home/user/project/config.yaml`\n```\nserver:\n  port: 8080\n  host: 0.0.0.0\n"
+    },
+    {
+      "test": "code_fizzbuzz",
+      "passed": true,
+      "detail": "valid fizzbuzz code",
+      "avg_elapsed": 34.74114513397217,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "def fizzbuzz(n):\n    res = []\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            res.append(\"FizzBuzz\")\n        elif i % 3 == 0:\n            res.append(\"Fizz\")\n        elif i % 5 == 0:\n            res.append(\"Buzz\")\n        else:\n            res.append(i)\n    return res\n"
+    },
+    {
+      "test": "code_two_sum",
+      "passed": true,
+      "detail": "valid two_sum code",
+      "avg_elapsed": 24.569334030151367,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []\n"
+    },
+    {
+      "test": "instruct_json",
+      "passed": true,
+      "detail": "JSON with name/age",
+      "avg_elapsed": 10.20961880683899,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "{\"name\":\"Alice\",\"age\":30}"
+    },
+    {
+      "test": "instruct_format",
+      "passed": true,
+      "detail": "numbered list of 3",
+      "avg_elapsed": 22.220985889434814,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "1. Track changes to files over time\n2. Enable collaboration among multiple developers\n3. Allow easy rollback to previous versions"
+    },
+    {
+      "test": "reasoning_math",
+      "passed": true,
+      "detail": "computed 4*2+3*3=17",
+      "avg_elapsed": 22.690682888031006,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The total cost is:\n\n4 apples \u00d7 $2 = $8  \n3 oranges \u00d7 $3 = $9  \n\n$8 + $9 = $17\n\nTotal cost = **$17**."
+    },
+    {
+      "test": "agentic_loop",
+      "passed": true,
+      "detail": "chained 3 tools",
+      "avg_elapsed": 73.09486532211304,
+      "tool_calls": [
+        "search_files",
+        "read_file",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The search found `main.py` (along with `utils.py` and `test_main.py`) in `/home/user/project`.\n\nContents of `/home/user/project/main.py`:\n```\ndef main():\n    print('hello')\n    return 42\n```\n\nLine count computed with `calculate`:\nResult: 3\n\nFinal count = **3 lines**."
+    },
+    {
+      "test": "tool_selection",
+      "passed": true,
+      "detail": "selected search_files",
+      "avg_elapsed": 27.739048957824707,
+      "tool_calls": [
+        "search_files"
+      ],
+      "error": null,
+      "sample_text": "I used the `search_files` tool to look for configuration files.\n\nSearch pattern `config*` in `/home/user/project` returned:\n- `config.yaml`\n- `config.json`\n\nDo you want me to read the contents of either of these files?"
+    }
+  ]
+}
