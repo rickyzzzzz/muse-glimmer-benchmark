@@ -1,0 +1,315 @@
+{
+  "model": "qwen3.8:27b-mlx",
+  "passed": 30,
+  "total": 30,
+  "total_time": 889.9205465316772,
+  "results": [
+    {
+      "test": "tool_call_weather",
+      "passed": true,
+      "detail": "called get_weather",
+      "avg_elapsed": 17.651626110076904,
+      "tool_calls": [
+        "get_weather"
+      ],
+      "error": null,
+      "sample_text": "The current weather in **Tokyo** is **24\u00b0C (75\u00b0F)** with **partly cloudy** skies. \ud83c\udf24\ufe0f"
+    },
+    {
+      "test": "tool_call_args",
+      "passed": true,
+      "detail": "computed 15*4=60",
+      "avg_elapsed": 13.822964191436768,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The result of **15 \u00d7 4** is **60**."
+    },
+    {
+      "test": "multi_step_weather",
+      "passed": true,
+      "detail": "queried both cities",
+      "avg_elapsed": 10.089702844619751,
+      "tool_calls": [
+        "get_weather",
+        "get_weather"
+      ],
+      "error": null,
+      "sample_text": "Here are the current weather conditions:\n\n- **Paris:** 18\u00b0C, light rain\n- **Tokyo:** 24\u00b0C, partly cloudy\n\n**Tokyo is warmer** by 6\u00b0C. \ud83c\udf24\ufe0f"
+    },
+    {
+      "test": "multi_step_search_read",
+      "passed": true,
+      "detail": "searched then read",
+      "avg_elapsed": 17.995825052261353,
+      "tool_calls": [
+        "search_files",
+        "read_file"
+      ],
+      "error": null,
+      "sample_text": "Here's what I found:\n\n### Python files in `/home/user/project`:\n- `main.py`\n- `utils.py`\n- `test_main.py`\n\n### Contents of `main.py`:\n\n```python\ndef main():\n    print('hello')\n    return 42\n```\n\n### What it returns:\nThe `main()` function in `main.py` **returns `42`**. It also prints `'hello'` to the"
+    },
+    {
+      "test": "failure_recovery",
+      "passed": true,
+      "detail": "recovered from error",
+      "avg_elapsed": 37.28817009925842,
+      "tool_calls": [
+        "read_file",
+        "search_files",
+        "read_file",
+        "read_file"
+      ],
+      "error": null,
+      "sample_text": "Here's what I found:\n\n**Original request:** `/home/user/project/nonexistent.txt` does not exist.\n\n**Fallback search for `config*` files** in `/home/user/project` returned two matches:\n- `config.yaml`\n- `config.json`\n\n**Contents:**\n- `config.yaml` \u2014 successfully read. It contains a server configurati"
+    },
+    {
+      "test": "code_fizzbuzz",
+      "passed": true,
+      "detail": "valid fizzbuzz code",
+      "avg_elapsed": 6.857563018798828,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\ndef fizzbuzz(n):\n    result = []\n    for i in range(1, n + 1):\n        if i % 3 == 0 and i % 5 == 0:\n            result.append(\"FizzBuzz\")\n        elif i % 3 == 0:\n            result.append(\"Fizz\")\n        elif i % 5 == 0:\n            result.append(\"Buzz\")\n        else:\n            result."
+    },
+    {
+      "test": "code_two_sum",
+      "passed": true,
+      "detail": "valid two_sum code",
+      "avg_elapsed": 7.32584810256958,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\ndef two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []\n```"
+    },
+    {
+      "test": "instruct_json",
+      "passed": true,
+      "detail": "JSON with name/age",
+      "avg_elapsed": 2.041693925857544,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "{\"name\": \"Alice\", \"age\": 30}"
+    },
+    {
+      "test": "instruct_format",
+      "passed": true,
+      "detail": "numbered list of 3",
+      "avg_elapsed": 7.389208793640137,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "1. It tracks changes over time, allowing you to see the history of modifications and revert to previous versions when needed.\n2. It enables multiple developers to work on the same project simultaneously without overwriting each other's changes.\n3. It provides a reliable backup of your code, reducing"
+    },
+    {
+      "test": "reasoning_math",
+      "passed": true,
+      "detail": "computed 4*2+3*3=17",
+      "avg_elapsed": 10.72299599647522,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The total cost is **$17**.\n\nHere's the breakdown:\n- 4 apples \u00d7 $2 = $8\n- 3 oranges \u00d7 $3 = $9\n- **Total: $8 + $9 = $17**"
+    },
+    {
+      "test": "agentic_loop",
+      "passed": true,
+      "detail": "chained 3 tools",
+      "avg_elapsed": 34.13484287261963,
+      "tool_calls": [
+        "search_files",
+        "read_file",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "## Summary\n\nHere's what I found:\n\n| Step | Action | Result |\n|------|--------|--------|\n| 1 | `search_files` for `*.py` in `/home/user/project` | Found: `main.py`, `utils.py`, `test_main.py` |\n| 2 | `read_file` on `main.py` | 3 lines of code |\n| 3 | `calculate` line count | **3** |\n\n### `main.py` Co"
+    },
+    {
+      "test": "tool_selection",
+      "passed": true,
+      "detail": "selected search_files",
+      "avg_elapsed": 11.968165874481201,
+      "tool_calls": [
+        "search_files"
+      ],
+      "error": null,
+      "sample_text": "The right tool for this task is **`search_files`** \u2014 it's designed to find files matching a pattern within a given directory.\n\nI used it to search for `config*` files in `/home/user/project`, and it found **2 matching files**:\n\n- `config.yaml`\n- `config.json`\n\nWould you like me to read the contents "
+    },
+    {
+      "test": "ds_code_pandas_clean",
+      "passed": true,
+      "detail": "pandas clean+groupby+top10",
+      "avg_elapsed": 8.692663192749023,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\nimport pandas as pd\n\ndf = pd.read_csv(\"data.csv\")\ndf = df.dropna(subset=[\"revenue\"])\ntop_10 = df.groupby(\"user_id\")[\"revenue\"].sum().nlargest(10)\nprint(top_10)\n```"
+    },
+    {
+      "test": "ds_code_retention",
+      "passed": true,
+      "detail": "retention calc code",
+      "avg_elapsed": 23.045779943466187,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\nfrom datetime import timedelta\nfrom collections import defaultdict\n\n\ndef compute_7day_retention(\n    signups: list[tuple[str, \"datetime.date\"]],\n    activities: list[tuple[str, \"datetime.date\"]],\n) -> float:\n    \"\"\"\n    Compute 7-day retention.\n\n    Args:\n        signups: list of (user_id,"
+    },
+    {
+      "test": "ds_code_power",
+      "passed": true,
+      "detail": "power analysis code",
+      "avg_elapsed": 71.63438105583191,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "```python\nfrom statsmodels.stats.power import NormalIndPower\nfrom statsmodels.stats.proportion import proportion_effectsize\nimport math\n\n# \u2500\u2500 Parameters \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\np1           = 0.05        # baseline conversion rate\nmde_relative = 0.01        # 1 % relative MDE\n"
+    },
+    {
+      "test": "ds_code_sql_join",
+      "passed": true,
+      "detail": "SQL join+group+having",
+      "avg_elapsed": 10.149124145507812,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```sql\nSELECT\n    u.country,\n    SUM(o.amount) AS total_revenue\nFROM\n    orders o\nJOIN\n    users u ON o.user_id = u.user_id\nGROUP BY\n    u.country\nHAVING\n    SUM(o.amount) > 10000\nORDER BY\n    total_revenue DESC;\n```"
+    },
+    {
+      "test": "ds_code_sql_window",
+      "passed": true,
+      "detail": "SQL window function",
+      "avg_elapsed": 8.62595510482788,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```sql\nSELECT order_id, user_id, order_date\nFROM (\n    SELECT\n        order_id,\n        user_id,\n        order_date,\n        ROW_NUMBER() OVER (\n            PARTITION BY user_id\n            ORDER BY order_date DESC\n        ) AS rn\n    FROM orders\n) ranked\nWHERE rn = 1;\n```"
+    },
+    {
+      "test": "exp_interpret_ab",
+      "passed": true,
+      "detail": "interpreted A/B results",
+      "avg_elapsed": 42.73546600341797,
+      "tool_calls": [
+        "get_experiment_results",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "## Recommendation: **Ship the Treatment** \u2705\n\nHere's a breakdown of the results for **exp_1234**:\n\n| Metric | Control | Treatment |\n|---|---|---|\n| Conversion Rate | 3.20% | 3.80% |\n| Sample Size | 50,000 | 50,000 |\n| **p-value** | **0.0001** | |\n\n### Key Findings\n\n1. **Statistical Significance:** Th"
+    },
+    {
+      "test": "exp_nonsig_ab",
+      "passed": true,
+      "detail": "correctly rejected non-sig result",
+      "avg_elapsed": 44.32178616523743,
+      "tool_calls": [
+        "get_experiment_results"
+      ],
+      "error": null,
+      "sample_text": "## Experiment `exp_5678` \u2014 Results & Recommendation\n\n### Raw Results\n\n| Metric | Control | Treatment |\n|---|---|---|\n| Conversion Rate | 4.50% | 4.60% |\n| Sample Size | 30,000 | 30,000 |\n| **p-value** | **0.42** | |\n\n### Analysis\n\n1. **Effect size is tiny.** The treatment lifts conversion by just **"
+    },
+    {
+      "test": "exp_design",
+      "passed": true,
+      "detail": "A/B design with metrics+guardrails",
+      "avg_elapsed": 53.214317083358765,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "# A/B Test Design: New Onboarding Flow\n\n## Randomization Unit\n**User (or account) level**, assigned at sign-up. Not session-level, because onboarding spans multiple sessions and a user seeing both variants would contaminate the measurement. If the product has team-based onboarding, randomize at the "
+    },
+    {
+      "test": "causal_confounder",
+      "passed": true,
+      "detail": "identified confounders",
+      "avg_elapsed": 91.82605481147766,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "# Correlation \u2260 Causation: Feature Usage and Retention\n\n## The Short Answer\n\n**No, you cannot conclude causality from the observation alone.** The fact that feature users show higher retention is a *correlation*, and there are many non-causal explanations. Jumping to \"the feature causes retention\" i"
+    },
+    {
+      "test": "causal_did",
+      "passed": true,
+      "detail": "DiD design + parallel trends",
+      "avg_elapsed": 40.53883194923401,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "## Difference-in-Differences (DiD) for the CA Policy\n\n### The Setup\n\nYou have a **treatment group** (California users, affected by the policy) and a **control group** (New York users, unaffected). You observe outcomes **before** and **after** the policy.\n\n### The Estimator\n\n$$\\hat{\\tau}_{DiD} = \\und"
+    },
+    {
+      "test": "causal_psm",
+      "passed": true,
+      "detail": "PSM explanation + limitations",
+      "avg_elapsed": 33.3131468296051,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "## Propensity Score Matching (PSM)\n\n**The problem:** In observational data, premium subscribers and non-subscribers differ systematically (e.g., tenure, engagement, spend). A na\u00efve comparison of churn rates confounds the subscription effect with these pre-existing differences.\n\n**How PSM works:**\n\n1"
+    },
+    {
+      "test": "ds_tool_sql_query",
+      "passed": true,
+      "detail": "queried orders count via SQL tool",
+      "avg_elapsed": 7.967169761657715,
+      "tool_calls": [
+        "run_sql"
+      ],
+      "error": null,
+      "sample_text": "We have a total of **1,250 orders** in the database."
+    },
+    {
+      "test": "ds_tool_cohort",
+      "passed": true,
+      "detail": "queried cohort retention",
+      "avg_elapsed": 18.845025062561035,
+      "tool_calls": [
+        "run_sql"
+      ],
+      "error": null,
+      "sample_text": "Based on the cohort retention data, here are the retention rates by week:\n\n| Week | Retention |\n|------|-----------|\n| W1 | 12.5% |\n| W2 | 11.8% |\n| W3 | 12.1% |\n\n**Week 1 (W1) had the highest retention at 12.5%.**\n\nThis is a common pattern in cohort analysis \u2014 retention is typically highest in the "
+    },
+    {
+      "test": "ds_tool_chain",
+      "passed": true,
+      "detail": "chained SQL + experiment tools",
+      "avg_elapsed": 18.44668698310852,
+      "tool_calls": [
+        "run_sql",
+        "get_experiment_results"
+      ],
+      "error": null,
+      "sample_text": "Here are the results:\n\n**User Count:** 3,200 users in the database.\n\n**Experiment exp_1234:**\n- Control conversion: 3.2%\n- Treatment conversion: 3.8%\n- Sample sizes: 50,000 per group\n- p-value: 0.0001\n\n**Significance:** Yes, the experiment is **statistically significant**. The p-value of 0.0001 is f"
+    },
+    {
+      "test": "ds_code_ltv",
+      "passed": true,
+      "detail": "LTV formula code",
+      "avg_elapsed": 21.55173397064209,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\ndef compute_ltv(arpu: float, monthly_churn_rate: float, gross_margin: float) -> float:\n    \"\"\"\n    Compute Customer Lifetime Value (LTV).\n\n    LTV = (ARPU * Gross Margin) / Monthly Churn Rate\n\n    Parameters:\n        arpu              : Average Revenue Per User per month\n        monthly_ch"
+    },
+    {
+      "test": "exp_multiple_testing",
+      "passed": true,
+      "detail": "multiple testing awareness",
+      "avg_elapsed": 64.60977697372437,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "# No \u2014 Don't Declare Victory Yet. Here's Why.\n\n## The Multiple Testing Problem\n\nWhen you test **20 metrics** at the conventional significance threshold of **\u03b1 = 0.05**, you're not looking at a single coin flip. You're flipping 20 coins, and you're asking: *\"Did at least one land on heads?\"*\n\nThe pro"
+    },
+    {
+      "test": "causal_simpson",
+      "passed": true,
+      "detail": "Simpson's paradox explanation",
+      "avg_elapsed": 60.85212278366089,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "## This is Simpson's Paradox\n\nWhat you're describing is the textbook signature of **Simpool's Paradox** (more precisely, *Simpson's Paradox*): the direction of an association reverses when you aggregate vs. when you condition on a subgroup. The \"overall\" treatment win is a **spurious effect created "
+    },
+    {
+      "test": "ds_code_sql_cohort",
+      "passed": true,
+      "detail": "SQL cohort retention",
+      "avg_elapsed": 92.26191782951355,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```sql\nWITH cohort AS (\n    SELECT\n        user_id,\n        DATE_TRUNC('week', signup_date) AS signup_week\n    FROM signups\n),\nactive_weeks AS (\n    SELECT DISTINCT\n        user_id,\n        DATE_TRUNC('week', activity_date) AS active_week\n    FROM activity\n),\ncohort_size AS (\n    SELECT\n        sign"
+    }
+  ]
+}

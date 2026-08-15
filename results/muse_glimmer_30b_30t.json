@@ -1,0 +1,347 @@
+{
+  "model": "muse-glimmer:30b-mlx",
+  "passed": 24,
+  "total": 30,
+  "total_time": 1847.4239704608917,
+  "results": [
+    {
+      "test": "tool_call_weather",
+      "passed": true,
+      "detail": "called get_weather",
+      "avg_elapsed": 37.47741389274597,
+      "tool_calls": [
+        "get_weather"
+      ],
+      "error": null,
+      "sample_text": "The current weather in Tokyo is 24\u00b0C, partly cloudy."
+    },
+    {
+      "test": "tool_call_args",
+      "passed": true,
+      "detail": "computed 15*4=60",
+      "avg_elapsed": 9.61390995979309,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The calculation is:\n\n15 \u00d7 4 = 60\n"
+    },
+    {
+      "test": "multi_step_weather",
+      "passed": true,
+      "detail": "queried both cities",
+      "avg_elapsed": 19.280382871627808,
+      "tool_calls": [
+        "get_weather",
+        "get_weather"
+      ],
+      "error": null,
+      "sample_text": "Paris is 18\u00b0C with light rain, and Tokyo is 24\u00b0C with partly cloudy skies.\n\nTokyo is warmer \u2014 about 6\u00b0C warmer than Paris.\n"
+    },
+    {
+      "test": "multi_step_search_read",
+      "passed": true,
+      "detail": "searched then read",
+      "avg_elapsed": 31.222978115081787,
+      "tool_calls": [
+        "search_files",
+        "read_file"
+      ],
+      "error": null,
+      "sample_text": "The search in `/home/user/project` found `main.py`, `utils.py`, and `test_main.py`.\n\nContents of `/home/user/project/main.py`:\n```python\ndef main():\n    print('hello')\n    return 42\n```\n\n`main()` prints `hello` and returns `42`."
+    },
+    {
+      "test": "failure_recovery",
+      "passed": true,
+      "detail": "recovered from error",
+      "avg_elapsed": 94.31060290336609,
+      "tool_calls": [
+        "read_file",
+        "search_files",
+        "read_file",
+        "read_file"
+      ],
+      "error": null,
+      "sample_text": "The file `/home/user/project/nonexistent.txt` could not be read:\n* Error: file not found: /home/user/project/nonexistent.txt\n\nAs a fallback I searched for `config*` files in `/home/user/project`:\n* Found: `config.yaml`, `config.json`\n\nRead results:\n* `/home/user/project/config.yaml` \u2013 exists and rea"
+    },
+    {
+      "test": "code_fizzbuzz",
+      "passed": true,
+      "detail": "valid fizzbuzz code",
+      "avg_elapsed": 29.83637499809265,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "def fizzbuzz(n):\n    result = []\n    for i in range(1, n + 1):\n        if i % 3 == 0 and i % 5 == 0:\n            result.append('FizzBuzz')\n        elif i % 3 == 0:\n            result.append('Fizz')\n        elif i % 5 == 0:\n            result.append('Buzz')\n        else:\n            result.append(i)\n"
+    },
+    {
+      "test": "code_two_sum",
+      "passed": true,
+      "detail": "valid two_sum code",
+      "avg_elapsed": 16.129777193069458,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []\n"
+    },
+    {
+      "test": "instruct_json",
+      "passed": true,
+      "detail": "JSON with name/age",
+      "avg_elapsed": 10.444061994552612,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "{\"name\":\"Alice\",\"age\":30}"
+    },
+    {
+      "test": "instruct_format",
+      "passed": true,
+      "detail": "numbered list of 3",
+      "avg_elapsed": 20.788208961486816,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "1. Track changes to code over time\n2. Enable collaboration among team members\n3. Allow easy rollback to previous versions"
+    },
+    {
+      "test": "reasoning_math",
+      "passed": true,
+      "detail": "computed 4*2+3*3=17",
+      "avg_elapsed": 20.21193814277649,
+      "tool_calls": [
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The total cost is:\n\n4 apples \u00d7 $2 = $8  \n3 oranges \u00d7 $3 = $9  \n\n$8 + $9 = $17\n\nTotal cost = **$17**."
+    },
+    {
+      "test": "agentic_loop",
+      "passed": true,
+      "detail": "chained 3 tools",
+      "avg_elapsed": 74.45501017570496,
+      "tool_calls": [
+        "search_files",
+        "read_file",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "The search found `main.py` (along with `utils.py` and `test_main.py`) in `/home/user/project`.\n\nContents of `/home/user/project/main.py`:\n```\ndef main():\n    print('hello')\n    return 42\n```\n\nLine count computed with `calculate`:\nResult: 3\n\nFinal count: **3 lines** in `main.py`."
+    },
+    {
+      "test": "tool_selection",
+      "passed": true,
+      "detail": "selected search_files",
+      "avg_elapsed": 23.94531512260437,
+      "tool_calls": [
+        "search_files"
+      ],
+      "error": null,
+      "sample_text": "I used the **search_files** tool to look for configuration files.\n\nSearch results in `/home/user/project` for pattern `config*`:\n- `config.yaml`\n- `config.json`\n\nWould you like me to read the contents of either of these files?"
+    },
+    {
+      "test": "ds_code_pandas_clean",
+      "passed": true,
+      "detail": "pandas clean+groupby+top10",
+      "avg_elapsed": 27.03745722770691,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "import pandas as pd\n\ndf = pd.read_csv('input.csv')\ndf = df.dropna(subset=['revenue'])\nuser_revenue = df.groupby('user_id')['revenue'].sum().reset_index()\ntop10 = user_revenue.sort_values('revenue', ascending=False).head(10)\nprint(top10)\n"
+    },
+    {
+      "test": "ds_code_retention",
+      "passed": true,
+      "detail": "retention calc code",
+      "avg_elapsed": 53.73726511001587,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\nfrom datetime import timedelta\n\ndef seven_day_retention(signups, activities):\n    signup_date = {}\n    for uid, d in signups:\n        signup_date[uid] = d\n\n    activity_set = set((uid, d) for uid, d in activities)\n\n    retained = 0\n    total = len(signup_date)\n    for uid, s_date in signup"
+    },
+    {
+      "test": "ds_code_power",
+      "passed": false,
+      "detail": "power analysis code",
+      "avg_elapsed": 117.35179901123047,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": ""
+    },
+    {
+      "test": "ds_code_sql_join",
+      "passed": false,
+      "detail": "error: max_turns_exceeded",
+      "avg_elapsed": 106.39781880378723,
+      "tool_calls": [
+        "search_files",
+        "search_files",
+        "run_sql",
+        "search_files",
+        "run_sql",
+        "search_files"
+      ],
+      "error": "max_turns_exceeded",
+      "sample_text": ""
+    },
+    {
+      "test": "ds_code_sql_window",
+      "passed": true,
+      "detail": "SQL window function",
+      "avg_elapsed": 25.456913948059082,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```sql\nWITH ranked_orders AS (\n  SELECT\n    order_id,\n    user_id,\n    order_date,\n    ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY order_date DESC) AS rn\n  FROM orders\n)\nSELECT order_id, user_id, order_date\nFROM ranked_orders\nWHERE rn = 1;\n```"
+    },
+    {
+      "test": "exp_interpret_ab",
+      "passed": true,
+      "detail": "interpreted A/B results",
+      "avg_elapsed": 64.04695296287537,
+      "tool_calls": [
+        "get_experiment_results",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "Experiment exp_1234 shows a clear, statistically significant improvement for the treatment.\n\n* **Conversion rate**\n  * Control: 0.032  = 3.2%  with n = 50,000\n  * Treatment: 0.038 = 3.8%  with n = 50,000\n\n* **Lift**\n  * Absolute lift = 0.038 - 0.032 = 0.006\n  * Relative lift = 0.006 / 0.032 \u2248 0.1875"
+    },
+    {
+      "test": "exp_nonsig_ab",
+      "passed": true,
+      "detail": "correctly rejected non-sig result",
+      "avg_elapsed": 74.07921314239502,
+      "tool_calls": [
+        "get_experiment_results",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "Experiment exp_5678:\n\n* control_conv = 0.045  \u2192 4.5%\n* treatment_conv = 0.046 \u2192 4.6%\n* control_n = 30,000\n* treatment_n = 30,000\n* p_value = 0.42\n\nRelative lift = (0.046 - 0.045) / 0.045 \u2248 0.0222 \u2248 +2.2% relative, +0.10 percentage points absolute.\n\nWith p = 0.42 >> 0.05 the observed difference is no"
+    },
+    {
+      "test": "exp_design",
+      "passed": false,
+      "detail": "error: max_turns_exceeded",
+      "avg_elapsed": 75.94011282920837,
+      "tool_calls": [
+        "search_files",
+        "search_files",
+        "search_files",
+        "search_files",
+        "search_files",
+        "run_sql"
+      ],
+      "error": "max_turns_exceeded",
+      "sample_text": ""
+    },
+    {
+      "test": "causal_confounder",
+      "passed": false,
+      "detail": "error: max_turns_exceeded",
+      "avg_elapsed": 80.7554669380188,
+      "tool_calls": [
+        "search_files",
+        "search_files",
+        "search_files",
+        "search_files",
+        "run_sql",
+        "search_files"
+      ],
+      "error": "max_turns_exceeded",
+      "sample_text": ""
+    },
+    {
+      "test": "causal_did",
+      "passed": true,
+      "detail": "DiD design + parallel trends",
+      "avg_elapsed": 53.00299119949341,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "Difference-in-differences compares the change over time in the treated unit to the change over time in a comparable untreated unit.\n\n* Setup: Treatment = California, Control = New York. Define pre-policy period t0 and post-policy period t1. Let Y be the outcome of interest.\n* Estimate:\n  ATT \u2248 [E[Y_"
+    },
+    {
+      "test": "causal_psm",
+      "passed": true,
+      "detail": "PSM explanation + limitations",
+      "avg_elapsed": 46.53774690628052,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "Propensity Score Matching, PSM, is a method to reduce selection bias in observational studies where treatment is not randomized.\n\n**How it works**\n1. **Propensity score estimation:** Estimate each user's probability of receiving the treatment \u2014 e.g., subscribing to premium \u2014 given observed covariate"
+    },
+    {
+      "test": "ds_tool_sql_query",
+      "passed": true,
+      "detail": "queried orders count via SQL tool",
+      "avg_elapsed": 24.07529330253601,
+      "tool_calls": [
+        "run_sql"
+      ],
+      "error": null,
+      "sample_text": "The total number of orders in the database is **1,250**.\n\nQuery used: `SELECT COUNT(*) AS total_orders FROM orders`\nResult: 1250"
+    },
+    {
+      "test": "ds_tool_cohort",
+      "passed": false,
+      "detail": "error: max_turns_exceeded",
+      "avg_elapsed": 130.5539309978485,
+      "tool_calls": [
+        "run_sql",
+        "run_sql",
+        "run_sql",
+        "run_sql",
+        "run_sql",
+        "run_sql"
+      ],
+      "error": "max_turns_exceeded",
+      "sample_text": ""
+    },
+    {
+      "test": "ds_tool_chain",
+      "passed": true,
+      "detail": "chained SQL + experiment tools",
+      "avg_elapsed": 44.31516981124878,
+      "tool_calls": [
+        "run_sql",
+        "get_experiment_results"
+      ],
+      "error": null,
+      "sample_text": "User count from the `users` table: **3,200** users.\n\nExperiment `exp_1234` results:\n- control_conv = 0.032\n- treatment_conv = 0.038\n- control_n = 50,000\n- treatment_n = 50,000\n- p_value = 0.0001\n\nWith p_value = 0.0001 < 0.05, the experiment is **statistically significant**. The treatment conversion "
+    },
+    {
+      "test": "ds_code_ltv",
+      "passed": true,
+      "detail": "LTV formula code",
+      "avg_elapsed": 52.03664207458496,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": "```python\ndef calculate_ltv(arpu_monthly, monthly_churn_rate, gross_margin):\n    if monthly_churn_rate <= 0:\n        raise ValueError(\"monthly_churn_rate must be > 0\")\n    return (arpu_monthly * gross_margin) / monthly_churn_rate\n```"
+    },
+    {
+      "test": "exp_multiple_testing",
+      "passed": true,
+      "detail": "multiple testing awareness",
+      "avg_elapsed": 92.97993683815002,
+      "tool_calls": [
+        "calculate",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "No, you should not declare victory on the basis of a single p=0.03 when you are looking at 20 metrics.\n\nThat is the classic multiple testing / family-wise error rate problem.\n\nIf each test is done at the nominal \u03b1 = 0.05 and the tests are independent, the probability of getting *at least one* false "
+    },
+    {
+      "test": "causal_simpson",
+      "passed": true,
+      "detail": "Simpson's paradox explanation",
+      "avg_elapsed": 270.5431649684906,
+      "tool_calls": [
+        "calculate",
+        "calculate",
+        "calculate"
+      ],
+      "error": null,
+      "sample_text": "This is the classic **Simpson\u2019s Paradox** in A/B testing.\n\nOverall conversion is a weighted average of the segment conversions, with the weights being the share of users that fall in each segment.\n\n```\nOverall CR = \u03a3  P(segment | variant) * CR(segment | variant)\n```\n\nIf the treatment changes the *mi"
+    },
+    {
+      "test": "ds_code_sql_cohort",
+      "passed": false,
+      "detail": "SQL cohort retention",
+      "avg_elapsed": 120.86012005805969,
+      "tool_calls": [],
+      "error": null,
+      "sample_text": ""
+    }
+  ]
+}

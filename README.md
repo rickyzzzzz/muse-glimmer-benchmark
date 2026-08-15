@@ -6,17 +6,19 @@
 
 ## TLDR
 
-- **Muse Glimmer 30B passed 12/12 agent tasks (100%)**; **Qwen 3.6 35B passed 11/12 (92%)**; **Qwen 3.8 27B passed 12/12 (100%)**.
-- **Qwen 3.8 is the fastest of the three** (180.7s total vs 187.3s for Qwen 3.6 and 371.4s for Glimmer) — and it fixed the one task Qwen 3.6 failed.
-- **The decisive difference (Qwen 3.6 vs 3.8):** on a 3-step tool chain (search → read → calculate), Qwen 3.6 shortcut past the `calculate` step and answered itself; **Qwen 3.8 executed every step as instructed** — matching Glimmer's tool-use fidelity.
+- **On the expanded 30-task suite (12 core agentic + 18 data-science workload tests): Qwen 3.8 27B passed 30/30 (100%)**; **Muse Glimmer 30B passed 24/30 (80%)**.
+- **Qwen 3.8 is 2.1× faster overall** (889.9s vs 1847.4s total; per-task avg 29.7s vs 61.6s).
+- **The decisive difference is the DS workload:** on 18 data-science tasks (pandas/SQL coding, A/B experimentation, causal inference), Qwen 3.8 passed **18/18 (100%)**; Glimmer passed **12/18 (67%)** — failing 4 tasks by tool-looping past its turn budget (`max_turns_exceeded`) and 2 by returning empty output.
+- **On the original 12 core agentic tasks, all three models are close:** Glimmer 12/12, Qwen 3.6 11/12 (shortcut a tool step), Qwen 3.8 12/12.
 - **Why the speed gap — the key architectural factor:** Glimmer is a **dense** model (~32.3B params, all active per token); Qwen 3.6 35B is a **Mixture-of-Experts (MoE)** model (~35B total, only **~3B active per token**); **Qwen 3.8 27B is dense** (~27.8B params, all active) — yet still ~2× faster than Glimmer.
-- **Recommendation:** Qwen 3.8 27B is now the best all-round local agent model of the three — Glimmer-level tool-use fidelity at Qwen-level speed.
+- **Recommendation:** Qwen 3.8 27B is the clear best local agent model for data-science workloads — perfect tool-use fidelity, no tool-looping, and 2× the speed.
 
 | Metric | **Muse Glimmer 30B** | **Qwen 3.6 35B** | **Qwen 3.8 27B** |
 |---|---|---|---|
-| **Passed** | **12/12 (100%)** | 11/12 (92%) | **12/12 (100%)** |
-| **Total time** | 371.4s | 187.3s | **180.7s** (fastest) |
-| **Avg per task** | 31.0s | 15.6s | **15.1s** |
+| **Core 12 tasks** | 12/12 (100%) | 11/12 (92%) | **12/12 (100%)** |
+| **Full 30 tasks** | 24/30 (80%) | — | **30/30 (100%)** |
+| **DS workload (18)** | 12/18 (67%) | — | **18/18 (100%)** |
+| **Total time (30)** | 1847.4s | — | **889.9s** (2.1× faster) |
 | **Architecture** | Dense | MoE | **Dense** |
 
 ![Benchmark infographic](infographic/infographic.png)
@@ -66,7 +68,7 @@ All models run locally via **Ollama's MLX engine** on the same Apple M1 Max (64 
 
 We wrote a purpose-built harness (`benchmark/agent_bench.py`) that drives all models through Ollama's `/api/chat` endpoint with **native tool-calling** and a simulated tool executor. Each task is a natural-language agent prompt; the model decides which tools to call (and with what arguments), receives tool results, and loops up to 6 turns before producing a final answer.
 
-**The 12 agentic tasks:**
+**The 30 tasks — 12 core agentic + 18 data-science workload tests:**
 
 | # | Task | What it tests |
 |---|---|---|
@@ -82,35 +84,83 @@ We wrote a purpose-built harness (`benchmark/agent_bench.py`) that drives all mo
 | 10 | `reasoning_math` | Tool-backed multi-step arithmetic |
 | 11 | `agentic_loop` | **3-step tool chain, execute all steps literally** |
 | 12 | `tool_selection` | Pick the correct tool for the job |
+| 13 | `ds_code_pandas_clean` | pandas: dropna + groupby + top-10 aggregation |
+| 14 | `ds_code_retention` | Python: 7-day retention computation |
+| 15 | `ds_code_power` | Python: A/B sample-size / power analysis |
+| 16 | `ds_code_sql_join` | SQL: JOIN + GROUP BY + HAVING + ORDER BY |
+| 17 | `ds_code_sql_window` | SQL: window function (ROW_NUMBER per user) |
+| 18 | `exp_interpret_ab` | Experimentation: read A/B results, decide to ship |
+| 19 | `exp_nonsig_ab` | Experimentation: correctly reject non-significant result |
+| 20 | `exp_design` | Experimentation: design A/B (unit, metrics, guardrails, duration) |
+| 21 | `causal_confounder` | Causal: identify confounders in observational comparison |
+| 22 | `causal_did` | Causal: difference-in-differences design + parallel trends |
+| 23 | `causal_psm` | Causal: propensity score matching + limitations |
+| 24 | `ds_tool_sql_query` | Tool use: answer business question via run_sql |
+| 25 | `ds_tool_cohort` | Tool use: cohort retention query + interpretation |
+| 26 | `ds_tool_chain` | Tool use: multi-tool chain (SQL → experiment) |
+| 27 | `ds_code_ltv` | Python: customer lifetime value formula |
+| 28 | `exp_multiple_testing` | Experimentation: multiple-testing / p-hacking awareness |
+| 29 | `causal_simpson` | Causal: Simpson's paradox in segmented A/B |
+| 30 | `ds_code_sql_cohort` | SQL: weekly cohort retention query |
 
 **Config:** temperature 0.2, `num_predict` 2000, up to 6 tool turns per task, single run per model (latency includes cold-start on first task).
 
 ## Results
 
-### Overall
+### Overall (30-task suite)
 
-| Metric | **Muse Glimmer 30B** | **Qwen 3.6 35B** | **Qwen 3.8 27B** |
-|---|---|---|---|
-| **Passed** | **12/12 (100%)** | 11/12 (92%) | **12/12 (100%)** |
-| **Total time** | 371.4s | 187.3s | **180.7s** (fastest) |
-| **Avg per task** | 31.0s | 15.6s | **15.1s** |
+| Metric | **Muse Glimmer 30B** | **Qwen 3.8 27B** |
+|---|---|---|
+| **Passed** | 24/30 (80%) | **30/30 (100%)** |
+| **Total time** | 1847.4s | **889.9s** (2.1× faster) |
+| **Avg per task** | 61.6s | **29.7s** |
+| **DS workload (18 tasks)** | 12/18 (67%) | **18/18 (100%)** |
 
-### Per-task detail
+> **Note on the 12-task core suite:** all three models pass the original 12 core agentic tasks (Glimmer 12/12, Qwen 3.6 11/12, Qwen 3.8 12/12). The expanded 30-task suite adds 18 data-science workload tests (pandas/SQL coding, A/B experimentation, causal inference) where the models diverge sharply.
 
-| Task | Glimmer | Q3.6 | Q3.8 | Glimmer (s) | Q3.6 (s) | Q3.8 (s) |
-|---|---|---|---|---|---|---|
-| tool_call_weather | ✅ | ✅ | ✅ | 9.1 | 29.0 | 13.5 |
-| tool_call_args | ✅ | ✅ | ✅ | 9.2 | 5.0 | 11.9 |
-| multi_step_weather | ✅ | ✅ | ✅ | 19.2 | 10.9 | 12.7 |
-| multi_step_search_read | ✅ | ✅ | ✅ | 31.8 | 22.3 | **17.4** |
-| failure_recovery | ✅ | ✅ | ✅ | 86.7 | **7.1** | 35.9 |
-| code_fizzbuzz | ✅ | ✅ | ✅ | 34.7 | 24.0 | **15.4** |
-| code_two_sum | ✅ | ✅ | ✅ | 24.6 | 18.3 | **5.3** |
-| instruct_json | ✅ | ✅ | ✅ | 10.2 | **2.8** | 3.5 |
-| instruct_format | ✅ | ✅ | ✅ | 22.2 | 20.5 | **8.5** |
-| reasoning_math | ✅ | ✅ | ✅ | 22.7 | 7.2 | 10.3 |
-| **agentic_loop** | ✅ | ❌ | ✅ | 73.1 | 35.3 | **32.6** |
-| tool_selection | ✅ | ✅ | ✅ | 27.7 | 4.9 | 13.6 |
+### Per-task detail (30-task suite)
+
+| Task | Glimmer | Q3.8 | Glimmer (s) | Q3.8 (s) |
+|---|---|---|---|---|
+| tool_call_weather | ✅ | ✅ | 37.5 | 17.7 |
+| tool_call_args | ✅ | ✅ | 9.6 | 13.8 |
+| multi_step_weather | ✅ | ✅ | 19.3 | 10.1 |
+| multi_step_search_read | ✅ | ✅ | 31.2 | 18.0 |
+| failure_recovery | ✅ | ✅ | 94.3 | 37.3 |
+| code_fizzbuzz | ✅ | ✅ | 29.8 | **6.9** |
+| code_two_sum | ✅ | ✅ | 16.1 | **7.3** |
+| instruct_json | ✅ | ✅ | 10.4 | **2.0** |
+| instruct_format | ✅ | ✅ | 20.8 | **7.4** |
+| reasoning_math | ✅ | ✅ | 20.2 | 10.7 |
+| agentic_loop | ✅ | ✅ | 74.5 | 34.1 |
+| tool_selection | ✅ | ✅ | 23.9 | 12.0 |
+| ds_code_pandas_clean | ✅ | ✅ | 27.0 | **8.7** |
+| ds_code_retention | ✅ | ✅ | 53.7 | **23.0** |
+| ds_code_power | ❌ | ✅ | 117.4 | 71.6 |
+| ds_code_sql_join | ❌ | ✅ | 106.4 | **10.1** |
+| ds_code_sql_window | ✅ | ✅ | 25.5 | **8.6** |
+| exp_interpret_ab | ✅ | ✅ | 64.0 | 42.7 |
+| exp_nonsig_ab | ✅ | ✅ | 74.1 | 44.3 |
+| exp_design | ❌ | ✅ | 75.9 | 53.2 |
+| causal_confounder | ❌ | ✅ | 80.8 | 91.8 |
+| causal_did | ✅ | ✅ | 53.0 | 40.5 |
+| causal_psm | ✅ | ✅ | 46.5 | 33.3 |
+| ds_tool_sql_query | ✅ | ✅ | 24.1 | **8.0** |
+| ds_tool_cohort | ❌ | ✅ | 130.6 | **18.8** |
+| ds_tool_chain | ✅ | ✅ | 44.3 | **18.4** |
+| ds_code_ltv | ✅ | ✅ | 52.0 | **21.6** |
+| exp_multiple_testing | ✅ | ✅ | 93.0 | 64.6 |
+| causal_simpson | ✅ | ✅ | 270.5 | **60.9** |
+| ds_code_sql_cohort | ❌ | ✅ | 120.9 | 92.3 |
+
+### Glimmer's 6 failures — real model issues
+
+Glimmer's failures on the DS suite are **genuine model failures**, not checker artifacts:
+
+- **4 × tool-looping (`max_turns_exceeded`):** `ds_code_sql_join`, `exp_design`, `causal_confounder`, `ds_tool_cohort` — Glimmer repeatedly called `search_files`/`run_sql` (6+ turns) instead of answering, burning its turn budget. Notably, on `ds_code_sql_join` (a pure SQL-writing task) it tried to *execute* tools instead of writing the query.
+- **2 × empty responses:** `ds_code_power` and `ds_code_sql_cohort` returned blank output.
+
+Qwen 3.8 passed all 18 DS tasks, including the same SQL/experimentation/causal questions.
 
 ### The single failure (Qwen 3.6 only)
 
@@ -156,12 +206,13 @@ Qwen 3.8 fixed the one failure Qwen 3.6 had — it now executes 3-step tool chai
 
 | Use case | Recommended model |
 |---|---|
-| **Strict multi-step agentic workflows** (must execute every tool step as planned) | **Qwen 3.8 27B** or **Muse Glimmer 30B** — both 100% tool-use fidelity; Qwen 3.8 is 2× faster |
+| **Data-science workloads** (pandas/SQL coding, A/B, causal inference) | **Qwen 3.8 27B** — 18/18 (100%), no tool-looping |
+| **Strict multi-step agentic workflows** (must execute every tool step as planned) | **Qwen 3.8 27B** or **Muse Glimmer 30B** — both 100% on core 12; Qwen 3.8 is 2× faster |
 | **Latency-sensitive / interactive use** (many short calls) | **Qwen 3.8 27B** — fastest overall |
-| **Code generation & instruction following** | **Qwen 3.8 27B** — fastest on both code tasks |
+| **Code generation & instruction following** | **Qwen 3.8 27B** — fastest on every code task |
 | **Legacy Qwen 3.6 workloads** | **Migrate to Qwen 3.8** — same speed class, better fidelity |
 
-**Bottom line:** Qwen 3.8 27B is the best all-round local agent model of the three — it matches Glimmer's 100% tool-use fidelity while being ~2× faster, and it fixes the one reliability gap Qwen 3.6 had. Glimmer remains a strong choice where its specific training for always-on agent workflows matters, but for most local agent workloads Qwen 3.8 is now the pick.
+**Bottom line:** Qwen 3.8 27B is the best local agent model for data-science work — it passes every DS task (pandas, SQL, A/B, causal), never tool-loops, and runs 2.1× faster than Glimmer. Glimmer's tool-looping on open-ended DS questions (4× `max_turns_exceeded`) and empty responses (2×) make it a risky choice for autonomous DS agent work, despite its strong core agentic performance.
 
 ## Reproduction
 
