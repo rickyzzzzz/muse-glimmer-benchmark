@@ -19,6 +19,8 @@
 | **Avg per task** | 31.0s | 15.6s | **15.1s** |
 | **Architecture** | Dense | MoE | **Dense** |
 
+![Benchmark infographic](infographic/infographic.png)
+
 ---
 
 ## Table of Contents

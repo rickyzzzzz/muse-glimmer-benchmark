@@ -10,7 +10,8 @@
     --text:#e8eefc;
     --muted:#94a3b8;
     --glim:#38bdf8;   /* Muse Glimmer - sky blue */
-    --qwen:#f59e0b;   /* Qwen - amber */
+    --q36:#f59e0b;    /* Qwen 3.6 - amber */
+    --q38:#34d399;    /* Qwen 3.8 - emerald (winner) */
     --green:#34d399;
     --red:#f87171;
     --border:#1e2a44;
@@ -18,86 +19,81 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;}
   body{background:var(--bg);color:var(--text);width:1200px;height:1500px;overflow:hidden;padding:0;}
-  .wrap{padding:48px 52px;height:1500px;display:flex;flex-direction:column;gap:26px;}
+  .wrap{padding:44px 48px;height:1500px;display:flex;flex-direction:column;gap:20px;}
 
   /* Header */
   .hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
   .hdr .title{flex:1;}
-  .hdr .badges{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
-  .hdr h1{font-size:40px;font-weight:800;line-height:1.12;letter-spacing:-0.5px;}
+  .hdr .badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+  .hdr h1{font-size:34px;font-weight:800;line-height:1.12;letter-spacing:-0.5px;}
   .hdr h1 .glim{color:var(--glim);}
-  .hdr h1 .vs{color:var(--muted);font-weight:600;font-size:30px;padding:0 8px;}
-  .hdr h1 .qwen{color:var(--qwen);}
-  .hdr .sub{color:var(--muted);font-size:17px;margin-top:12px;line-height:1.5;}
-  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:var(--text);}
-  .pill .dot{width:10px;height:10px;border-radius:50%;}
+  .hdr h1 .vs{color:var(--muted);font-weight:600;font-size:24px;padding:0 6px;}
+  .hdr h1 .q36{color:var(--q36);}
+  .hdr h1 .q38{color:var(--q38);}
+  .hdr .sub{color:var(--muted);font-size:15px;margin-top:10px;line-height:1.5;}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--text);}
+  .pill .dot{width:9px;height:9px;border-radius:50%;}
 
-  /* Headline score cards */
-  .scores{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
-  .score{padding:26px 30px;}
-  .score.left{border-right:1px solid var(--border);}
-  .score.right{border-left:1px solid var(--border);}
-  .score .model{font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px;}
-  .score .big{font-size:64px;font-weight:800;line-height:1;margin-top:10px;}
-  .score .big .of{font-size:24px;color:var(--muted);font-weight:600;}
-  .score .lbl{margin-top:8px;font-size:15px;color:var(--muted);}
-  .score .tag{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;}
-  .vscenter{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 26px;background:var(--card2);}
-  .vscenter .vs{font-size:30px;font-weight:800;color:var(--accent);}
-  .vscenter .lbl{font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:4px;}
+  /* Headline score cards - 3 columns */
+  .scores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;align-items:stretch;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+  .score{padding:22px 24px;}
+  .score.mid{border-left:1px solid var(--border);border-right:1px solid var(--border);}
+  .score .model{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
+  .score .big{font-size:52px;font-weight:800;line-height:1;margin-top:8px;}
+  .score .big .of{font-size:20px;color:var(--muted);font-weight:600;}
+  .score .lbl{margin-top:6px;font-size:13px;color:var(--muted);}
+  .score .tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;}
+  .score.winner{background:linear-gradient(180deg,rgba(52,211,153,0.08),transparent);}
 
   /* Metric chips */
-  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
-  .metric{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 20px;}
-  .metric .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
-  .metric .v{font-size:30px;font-weight:800;margin-top:8px;}
-  .metric .s{font-size:13px;color:var(--muted);margin-top:4px;}
-  .metric.glim .v{color:var(--glim);}
-  .metric.qwen .v{color:var(--qwen);}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .metric{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 18px;}
+  .metric .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+  .metric .v{font-size:28px;font-weight:800;margin-top:6px;}
+  .metric .s{font-size:12px;color:var(--muted);margin-top:3px;}
   .metric.win .v{color:var(--green);}
 
   /* Why section */
-  .why{background:linear-gradient(135deg,#16224a,#111a2e);border:1px solid var(--border);border-radius:20px;padding:24px 28px;}
-  .why .k{font-size:13px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:14px;}
-  .archs{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  .arch{background:rgba(255,255,255,0.03);border-radius:14px;padding:18px 20px;}
-  .arch .nm{font-weight:800;font-size:17px;}
-  .arch .nm.g{color:var(--glim);} .arch .nm.q{color:var(--qwen);}
-  .arch .kind{font-size:13px;color:var(--muted);margin-top:4px;}
-  .arch .big{font-size:26px;font-weight:800;margin-top:12px;}
-  .arch .sub{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.5;}
+  .why{background:linear-gradient(135deg,#16224a,#111a2e);border:1px solid var(--border);border-radius:20px;padding:20px 24px;}
+  .why .k{font-size:12px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:12px;}
+  .archs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .arch{background:rgba(255,255,255,0.03);border-radius:14px;padding:16px 18px;}
+  .arch .nm{font-weight:800;font-size:15px;}
+  .arch .nm.g{color:var(--glim);} .arch .nm.q6{color:var(--q36);} .arch .nm.q8{color:var(--q38);}
+  .arch .kind{font-size:12px;color:var(--muted);margin-top:3px;}
+  .arch .big{font-size:22px;font-weight:800;margin-top:10px;}
+  .arch .sub{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45;}
 
   /* Decisive task callout */
-  .decide{display:flex;align-items:center;gap:18px;background:var(--card2);border-left:4px solid var(--accent);border-radius:12px;padding:18px 22px;}
-  .decide .ic{font-size:26px;}
-  .decide .t{font-size:15px;line-height:1.6;}
+  .decide{display:flex;align-items:center;gap:16px;background:var(--card2);border-left:4px solid var(--q38);border-radius:12px;padding:16px 20px;}
+  .decide .ic{font-size:24px;}
+  .decide .t{font-size:14px;line-height:1.55;}
   .decide .t b{color:#fff;}
-  .decide .t .g{color:var(--glim);} .decide .t .q{color:var(--qwen);}
+  .decide .t .g{color:var(--glim);} .decide .t .q6{color:var(--q36);} .decide .t .q8{color:var(--q38);}
 
-  /* Per-task bars */
+  /* Per-task bars - 3 columns */
   .tasks{flex:1;display:flex;flex-direction:column;}
-  .tasks .k{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:10px;}
-  .task{display:grid;grid-template-columns:200px 1fr 1fr;align-items:center;gap:16px;padding:6px 0;border-bottom:1px solid rgba(30,42,68,0.6);}
+  .tasks .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:800;margin-bottom:8px;}
+  .task{display:grid;grid-template-columns:190px 1fr 1fr 1fr;align-items:center;gap:12px;padding:5px 0;border-bottom:1px solid rgba(30,42,68,0.6);}
   .task:last-child{border-bottom:none;}
-  .task .name{font-size:14px;font-weight:600;color:var(--text);}
-  .bar-row{display:flex;flex-direction:column;gap:3px;}
-  .bar-row .lbl{font-size:11px;color:var(--muted);margin-bottom:1px;}
-  .bar{height:12px;border-radius:6px;position:relative;min-width:2px;}
+  .task .name{font-size:13px;font-weight:600;color:var(--text);}
+  .bar-row{display:flex;flex-direction:column;gap:2px;}
+  .bar-row .lbl{font-size:10px;color:var(--muted);margin-bottom:1px;}
+  .bar{height:10px;border-radius:5px;position:relative;min-width:2px;}
   .bar.glim{background:linear-gradient(90deg,#0ea5e9,var(--glim));}
-  .bar.qwen{background:linear-gradient(90deg,#d97706,var(--qwen));}
-  .barwrap{display:flex;align-items:center;gap:8px;}
-  .barwrap .sec{font-size:11px;color:var(--muted);min-width:34px;text-align:right;}
-  .fail{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--red);}
-  .pass{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--green);}
-  .passg{color:var(--glim);font-size:14px;}
-  .passq{color:var(--qwen);font-size:14px;}
+  .bar.q36{background:linear-gradient(90deg,#d97706,var(--q36));}
+  .bar.q38{background:linear-gradient(90deg,#059669,var(--q38));}
+  .barwrap{display:flex;align-items:center;gap:6px;}
+  .barwrap .sec{font-size:10px;color:var(--muted);min-width:30px;text-align:right;}
+  .fail{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--red);}
+  .pass{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--green);}
 
   /* Footer */
-  .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--border);padding-top:20px;}
-  .foot .rec{font-size:15px;line-height:1.55;flex:1;}
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--border);padding-top:16px;}
+  .foot .rec{font-size:14px;line-height:1.5;flex:1;}
   .foot .rec b{color:#fff;}
-  .foot .rec .g{color:var(--glim);} .foot .rec .q{color:var(--qwen);}
-  .foot .url{font-size:14px;color:var(--accent);font-weight:700;white-space:nowrap;}
+  .foot .rec .g{color:var(--glim);} .foot .rec .q6{color:var(--q36);} .foot .rec .q8{color:var(--q38);}
+  .foot .url{font-size:13px;color:var(--accent);font-weight:700;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -106,41 +102,44 @@
   <!-- HEADER -->
   <div class="hdr">
     <div class="title">
-      <h1><span class="glim">Muse Glimmer 30B</span><span class="vs">vs</span><span class="qwen">Qwen 3.6 35B</span></h1>
-      <div class="sub">Local Agent-Task Benchmark · 12 real agentic tasks · Apple M1 Max · Ollama MLX · Dense vs MoE</div>
+      <h1><span class="glim">Muse Glimmer 30B</span><span class="vs">vs</span><span class="q36">Qwen 3.6 35B</span><span class="vs">vs</span><span class="q38">Qwen 3.8 27B</span></h1>
+      <div class="sub">Local Agent-Task Benchmark · 12 real agentic tasks · Apple M1 Max · Ollama MLX · Dense vs MoE vs Dense</div>
     </div>
     <div class="badges">
       <span class="pill"><span class="dot" style="background:var(--glim)"></span>Dense · 32.3B</span>
-      <span class="pill"><span class="dot" style="background:var(--qwen)"></span>MoE · ~3B active</span>
+      <span class="pill"><span class="dot" style="background:var(--q36)"></span>MoE · ~3B active</span>
+      <span class="pill"><span class="dot" style="background:var(--q38)"></span>Dense · 27.8B</span>
     </div>
   </div>
 
   <!-- SCORES -->
   <div class="scores">
-    <div class="score left">
+    <div class="score">
       <div class="model"><span style="color:var(--glim)">●</span> Muse Glimmer 30B</div>
       <div class="big" style="color:var(--glim)">12/12 <span class="of">· 100%</span></div>
       <div class="lbl">Perfect tool-use fidelity</div>
       <span class="tag" style="background:rgba(56,189,248,0.15);color:var(--glim)">✓ Tool reliability</span>
     </div>
-    <div class="vscenter">
-      <div class="vs">VS</div>
-      <div class="lbl">AGENT TASKS</div>
+    <div class="score mid">
+      <div class="model"><span style="color:var(--q36)">●</span> Qwen 3.6 35B</div>
+      <div class="big" style="color:var(--q36)">11/12 <span class="of">· 92%</span></div>
+      <div class="lbl">Shortcut on a 3-step chain</div>
+      <span class="tag" style="background:rgba(245,158,11,0.15);color:var(--q36)">⚡ Fast, one miss</span>
     </div>
-    <div class="score right">
-      <div class="model"><span style="color:var(--qwen)">●</span> Qwen 3.6 35B</div>
-      <div class="big" style="color:var(--qwen)">11/12 <span class="of">· 92%</span></div>
-      <div class="lbl">One shortcut on a 3-step chain</div>
-      <span class="tag" style="background:rgba(245,158,11,0.15);color:var(--qwen)">⚡ 2× faster</span>
+    <div class="score winner">
+      <div class="model"><span style="color:var(--q38)">●</span> Qwen 3.8 27B</div>
+      <div class="big" style="color:var(--q38)">12/12 <span class="of">· 100%</span></div>
+      <div class="lbl">Perfect fidelity + fastest</div>
+      <span class="tag" style="background:rgba(52,211,153,0.15);color:var(--q38)">🏆 Best all-round</span>
     </div>
   </div>
 
   <!-- METRICS -->
   <div class="metrics">
-    <div class="metric glim"><div class="k">Glimmer total</div><div class="v">371s</div><div class="s">31.0s / task</div></div>
-    <div class="metric qwen"><div class="k">Qwen total</div><div class="v">187s</div><div class="s">15.6s / task</div></div>
-    <div class="metric win"><div class="k">Speed gap</div><div class="v">2×</div><div class="s">Qwen is ~2× faster</div></div>
-    <div class="metric"><div class="k">Why?</div><div class="v" style="font-size:22px;color:var(--accent)">Dense vs MoE</div><div class="s">Sparse activation wins</div></div>
+    <div class="metric"><div class="k">Glimmer total</div><div class="v" style="color:var(--glim)">371s</div><div class="s">31.0s / task</div></div>
+    <div class="metric"><div class="k">Qwen 3.6 total</div><div class="v" style="color:var(--q36)">187s</div><div class="s">15.6s / task</div></div>
+    <div class="metric win"><div class="k">Qwen 3.8 total</div><div class="v">181s</div><div class="s">15.1s / task · fastest</div></div>
+    <div class="metric"><div class="k">Speed gap</div><div class="v" style="font-size:22px;color:var(--accent)">2× vs Glimmer</div><div class="s">Qwen 3.8 is 2× faster</div></div>
   </div>
 
   <!-- WHY -->
@@ -150,14 +149,20 @@
       <div class="arch">
         <div class="nm g">Muse Glimmer — Dense</div>
         <div class="kind">all parameters active per token</div>
-        <div class="big" style="color:var(--glim)">32.3B <span style="font-size:16px;color:var(--muted)">active</span></div>
-        <div class="sub">Every expert "brain" engages on every step → maximal capacity, higher FLOPs/token → slower but more faithful tool-following.</div>
+        <div class="big" style="color:var(--glim)">32.3B <span style="font-size:14px;color:var(--muted)">active</span></div>
+        <div class="sub">Every "brain" engages on every step → maximal capacity, higher FLOPs/token → slower but faithful.</div>
       </div>
       <div class="arch">
-        <div class="nm q">Qwen 3.6 — MoE</div>
+        <div class="nm q6">Qwen 3.6 — MoE</div>
         <div class="kind">sparse, only ~3B active per token</div>
-        <div class="big" style="color:var(--qwen)">~3B <span style="font-size:16px;color:var(--muted)">active</span> / 35B total</div>
-        <div class="sub">Gating routes each token through a tiny expert slice → far fewer FLOPs/token → much faster inference, at a small reliability cost.</div>
+        <div class="big" style="color:var(--q36)">~3B <span style="font-size:14px;color:var(--muted)">active</span> / 35B total</div>
+        <div class="sub">Gating routes each token through a tiny expert slice → far fewer FLOPs → fast, but shortcut a tool step.</div>
+      </div>
+      <div class="arch">
+        <div class="nm q8">Qwen 3.8 — Dense</div>
+        <div class="kind">all parameters active per token</div>
+        <div class="big" style="color:var(--q38)">27.8B <span style="font-size:14px;color:var(--muted)">active</span></div>
+        <div class="sub">Smaller dense model + efficient MLX → Glimmer-level fidelity at Qwen-level speed. Best of both.</div>
       </div>
     </div>
   </div>
@@ -165,65 +170,77 @@
   <!-- DECISIVE TASK -->
   <div class="decide">
     <div class="ic">🎯</div>
-    <div class="t"><b>The deciding task —</b> a 3-step chain <span class="g"><b>search → read → calculate</b></span>. Glimmer executed <b>every step literally</b> <span class="g">[search, read, calculate]</span>. Qwen <span class="q">skipped the calculate call</span> and answered itself — right answer, but it <b>shortcut the tool plan</b>.</div>
+    <div class="t"><b>The deciding task —</b> a 3-step chain <span class="g"><b>search → read → calculate</b></span>. Glimmer executed <b>every step literally</b> <span class="g">[search, read, calculate]</span>. Qwen 3.6 <span class="q6">skipped the calculate call</span> and answered itself. <span class="q8"><b>Qwen 3.8 executed all 3 steps</b></span> — matching Glimmer's fidelity, 2× faster.</div>
   </div>
 
   <!-- PER-TASK -->
   <div class="tasks">
-    <div class="k">◆ Per-task latency (seconds) &nbsp;·&nbsp; <span style="color:var(--glim)">■ Glimmer</span> &nbsp;<span style="color:var(--qwen)">■ Qwen</span></div>
+    <div class="k">◆ Per-task latency (seconds) &nbsp;·&nbsp; <span style="color:var(--glim)">■ Glimmer</span> &nbsp;<span style="color:var(--q36)">■ Qwen 3.6</span> &nbsp;<span style="color:var(--q38)">■ Qwen 3.8</span></div>
 
     <div class="task"><div class="name">1 · tool_call_weather</div>
-      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:13%"></div><span class="sec">9.1s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:41%"></div><span class="sec">29.0s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:10%"></div><span class="sec">9.1s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:33%"></div><span class="sec">29.0s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:16%"></div><span class="sec">13.5s</span></div></div></div>
 
     <div class="task"><div class="name">2 · tool_call_args</div>
-      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:13%"></div><span class="sec">9.2s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:7%"></div><span class="sec">5.0s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:11%"></div><span class="sec">9.2s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:6%"></div><span class="sec">5.0s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:14%"></div><span class="sec">11.9s</span></div></div></div>
 
     <div class="task"><div class="name">3 · multi_step_weather</div>
-      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:27%"></div><span class="sec">19.2s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:16%"></div><span class="sec">10.9s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:22%"></div><span class="sec">19.2s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:13%"></div><span class="sec">10.9s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:15%"></div><span class="sec">12.7s</span></div></div></div>
 
     <div class="task"><div class="name">4 · multi_step_search_read</div>
-      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:46%"></div><span class="sec">31.8s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:32%"></div><span class="sec">22.3s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:37%"></div><span class="sec">31.8s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:26%"></div><span class="sec">22.3s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:20%"></div><span class="sec">17.4s</span></div></div></div>
 
     <div class="task"><div class="name">5 · failure_recovery</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:100%"></div><span class="sec">86.7s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:8%"></div><span class="sec">7.1s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:8%"></div><span class="sec">7.1s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:41%"></div><span class="sec">35.9s</span></div></div></div>
 
     <div class="task"><div class="name">6 · code_fizzbuzz</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:40%"></div><span class="sec">34.7s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:28%"></div><span class="sec">24.0s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:28%"></div><span class="sec">24.0s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:18%"></div><span class="sec">15.4s</span></div></div></div>
 
     <div class="task"><div class="name">7 · code_two_sum</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:28%"></div><span class="sec">24.6s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:21%"></div><span class="sec">18.3s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:21%"></div><span class="sec">18.3s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:6%"></div><span class="sec">5.3s</span></div></div></div>
 
     <div class="task"><div class="name">8 · instruct_json</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:12%"></div><span class="sec">10.2s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:3%"></div><span class="sec">2.8s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:3%"></div><span class="sec">2.8s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:4%"></div><span class="sec">3.5s</span></div></div></div>
 
     <div class="task"><div class="name">9 · instruct_format</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:26%"></div><span class="sec">22.2s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:24%"></div><span class="sec">20.5s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:24%"></div><span class="sec">20.5s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:10%"></div><span class="sec">8.5s</span></div></div></div>
 
     <div class="task"><div class="name">10 · reasoning_math</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:26%"></div><span class="sec">22.7s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:8%"></div><span class="sec">7.2s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:8%"></div><span class="sec">7.2s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:12%"></div><span class="sec">10.3s</span></div></div></div>
 
     <div class="task"><div class="name">11 · agentic_loop</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:84%"></div><span class="sec">73.1s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:41%"></div><span class="sec">35.3s</span><span class="fail">✗</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:41%"></div><span class="sec">35.3s</span><span class="fail">✗</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:38%"></div><span class="sec">32.6s</span><span class="pass">✓</span></div></div></div>
 
     <div class="task"><div class="name">12 · tool_selection</div>
       <div class="bar-row"><div class="barwrap"><div class="bar glim" style="width:32%"></div><span class="sec">27.7s</span></div></div>
-      <div class="bar-row"><div class="barwrap"><div class="bar qwen" style="width:6%"></div><span class="sec">4.9s</span></div></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q36" style="width:6%"></div><span class="sec">4.9s</span></div></div>
+      <div class="bar-row"><div class="barwrap"><div class="bar q38" style="width:16%"></div><span class="sec">13.6s</span></div></div></div>
   </div>
 
   <!-- FOOTER -->
   <div class="foot">
-    <div class="rec"><b>Builders:</b> need reliable multi-step tool execution → <span class="g"><b>Glimmer</b></span>. Need fast interactive responses → <span class="q"><b>Qwen</b></span>. Both Apache-2.0, fully offline.</div>
+    <div class="rec"><b>Builders:</b> need reliable multi-step tool execution AND speed → <span class="q8"><b>Qwen 3.8 27B</b></span> — Glimmer-level fidelity at 2× the speed. <span class="g"><b>Glimmer</b></span> remains a strong always-on agent choice. All Apache-2.0, fully offline.</div>
     <div class="url">github.com/rickyzzzzz/muse-glimmer-benchmark</div>
   </div>
 
